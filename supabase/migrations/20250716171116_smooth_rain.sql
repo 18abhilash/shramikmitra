@@ -83,4 +83,33 @@ CREATE TABLE IF NOT EXISTS job_applications (
     UNIQUE(job_id, laborer_id)
 );
 
+-- Ratings table
+CREATE TABLE IF NOT EXISTS ratings (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    job_id UUID REFERENCES jobs(id) ON DELETE CASCADE,
+    rater_id UUID REFERENCES users(id) ON DELETE CASCADE,
+    rated_id UUID REFERENCES users(id) ON DELETE CASCADE,
+    rating INTEGER CHECK (rating >= 1 AND rating <= 5) NOT NULL,
+    comment TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    UNIQUE(job_id, rater_id, rated_id)
+);
+
+-- Indexes for better performance
+CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
+CREATE INDEX IF NOT EXISTS idx_users_role ON users(role);
+CREATE INDEX IF NOT EXISTS idx_users_location ON users(location_lat, location_lng);
+CREATE INDEX IF NOT EXISTS idx_laborer_profiles_user_id ON laborer_profiles(user_id);
+CREATE INDEX IF NOT EXISTS idx_jobs_employer_id ON jobs(employer_id);
+CREATE INDEX IF NOT EXISTS idx_jobs_category ON jobs(category);
+CREATE INDEX IF NOT EXISTS idx_jobs_status ON jobs(status);
+CREATE INDEX IF NOT EXISTS idx_jobs_location ON jobs(location_lat, location_lng);
+CREATE INDEX IF NOT EXISTS idx_job_applications_job_id ON job_applications(job_id);
+CREATE INDEX IF NOT EXISTS idx_job_applications_laborer_id ON job_applications(laborer_id);
+CREATE INDEX IF NOT EXISTS idx_messages_sender_receiver ON messages(sender_id, receiver_id);
+
+
+
+
+
 
