@@ -102,3 +102,75 @@ CREATE INDEX IF NOT EXISTS idx_jobs_location ON jobs(location_lat, location_lng)
 CREATE INDEX IF NOT EXISTS idx_job_applications_job_id ON job_applications(job_id);
 CREATE INDEX IF NOT EXISTS idx_job_applications_laborer_id ON job_applications(laborer_id);
 CREATE INDEX IF NOT EXISTS idx_messages_sender_receiver ON messages(sender_id, receiver_id);
+
+-- Row Level Security (RLS) policies
+ALTER TABLE users ENABLE ROW LEVEL SECURITY;
+ALTER TABLE laborer_profiles ENABLE ROW LEVEL SECURITY;
+ALTER TABLE jobs ENABLE ROW LEVEL SECURITY;
+ALTER TABLE job_applications ENABLE ROW LEVEL SECURITY;
+ALTER TABLE messages ENABLE ROW LEVEL SECURITY;
+ALTER TABLE ratings ENABLE ROW LEVEL SECURITY;
+
+-- Users can read all user profiles but only update their own
+CREATE POLICY "Users can view all profiles" ON users FOR SELECT USING (true);
+CREATE POLICY "Users can update own profile" ON users FOR UPDATE USING (auth.uid()::text = id::text);
+CREATE POLICY "Users can insert own profile" ON users FOR INSERT WITH CHECK (auth.uid()::text = id::text);
+
+-- Laborer profiles policies
+CREATE POLICY "Anyone can view laborer profiles" ON laborer_profiles FOR SELECT USING (true);
+CREATE POLICY "Laborers can manage own profile" ON laborer_profiles FOR ALL USING (auth.uid()::text = user_id::text);
+
+-- Jobs policies
+CREATE POLICY "Anyone can view open jobs" ON jobs FOR SELECT USING (true);
+CREATE POLICY "Employers can manage own jobs" ON jobs FOR ALL USING (auth.uid()::text = employer_id::text);
+
+-- Job applications policies
+CREATE POLICY "Users can view applications for their jobs/applications" ON job_applications FOR SELECT USING (
+    auth.uid()::text = laborer_id::text OR 
+    auth.uid()::text IN (SELECT employer_id::text FROM jobs WHERE id = job_id)
+);
+CREATE POLICY "Laborers can apply to jobs" ON job_applications FOR INSERT WITH CHECK (auth.uid()::text = laborer_id::text);
+CREATE POLICY "Employers can update application status" ON job_applications FOR UPDATE USING (
+    auth.uid()::text IN (SELECT employer_id::text FROM jobs WHERE id = job_id)
+);
+
+-- Messages policies
+CREATE POLICY "Users can view their messages" ON messages FOR SELECT USING (
+    auth.uid()::text = sender_id::text OR auth.uid()::text = receiver_id::text
+);
+CREATE POLICY "Users can send messages" ON messages FOR INSERT WITH CHECK (auth.uid()::text = sender_id::text);
+CREATE POLICY "Users can update read status of received messages" ON messages FOR UPDATE USING (
+    auth.uid()::text = receiver_id::text
+);
+
+-- Ratings policies
+CREATE POLICY "Anyone can view ratings" ON ratings FOR SELECT USING (true);
+CREATE POLICY "Users can rate after job completion" ON ratings FOR INSERT WITH CHECK (
+    auth.uid()::text = rater_id::text AND
+    EXISTS (
+        SELECT 1 FROM jobs 
+        WHERE id = job_id AND status = 'completed' AND 
+        (employer_id::text = auth.uid()::text OR assigned_to::text = auth.uid()::text)
+    )
+);
+
+-- Functions to update user ratings
+CREATE OR REPLACE FUNCTION update_user_rating()
+RETURNS TRIGGER AS $$
+BEGIN
+    UPDATE users 
+    SET rating = (
+        SELECT COALESCE(AVG(rating), 0) 
+        FROM ratings 
+        WHERE rated_id = NEW.rated_id
+    )
+    WHERE id = NEW.rated_id;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER update_rating_trigger
+    AFTER INSERT ON ratings
+    FOR EACH ROW
+    EXECUTE FUNCTION update_user_rating();
+
