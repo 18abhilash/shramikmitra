@@ -91,6 +91,19 @@ CREATE TABLE IF NOT EXISTS ratings (
     UNIQUE(job_id, rater_id, rated_id)
 );
 
+CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
+CREATE INDEX IF NOT EXISTS idx_users_role ON users(role);
+CREATE INDEX IF NOT EXISTS idx_users_location ON users(location_lat, location_lng);
+CREATE INDEX IF NOT EXISTS idx_laborer_profiles_user_id ON laborer_profiles(user_id);
+CREATE INDEX IF NOT EXISTS idx_jobs_employer_id ON jobs(employer_id);
+CREATE INDEX IF NOT EXISTS idx_jobs_category ON jobs(category);
+CREATE INDEX IF NOT EXISTS idx_jobs_status ON jobs(status);
+CREATE INDEX IF NOT EXISTS idx_jobs_location ON jobs(location_lat, location_lng);
+CREATE INDEX IF NOT EXISTS idx_job_applications_job_id ON job_applications(job_id);
+CREATE INDEX IF NOT EXISTS idx_job_applications_laborer_id ON job_applications(laborer_id);
+CREATE INDEX IF NOT EXISTS idx_messages_sender_receiver ON messages(sender_id, receiver_id);
+
+
 
 
 
