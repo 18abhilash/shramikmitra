@@ -71,3 +71,16 @@ CREATE TABLE IF NOT EXISTS jobs (
     end_date TIMESTAMP WITH TIME ZONE,
     urgent BOOLEAN DEFAULT FALSE
 );
+
+-- Job applications table
+CREATE TABLE IF NOT EXISTS job_applications (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    job_id UUID REFERENCES jobs(id) ON DELETE CASCADE,
+    laborer_id UUID REFERENCES users(id) ON DELETE CASCADE,
+    status VARCHAR(20) CHECK (status IN ('pending', 'accepted', 'rejected')) DEFAULT 'pending',
+    message TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    UNIQUE(job_id, laborer_id)
+);
+
+
