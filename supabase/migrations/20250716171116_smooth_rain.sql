@@ -128,4 +128,16 @@ CREATE POLICY "Employers can manage own jobs" ON jobs FOR ALL USING (auth.uid():
 CREATE POLICY "Users can view applications for their jobs/applications" ON job_applications FOR SELECT USING (
     auth.uid()::text = laborer_id::text OR 
     auth.uid()::text IN (SELECT employer_id::text FROM jobs WHERE id = job_id)
+    );
+CREATE POLICY "Laborers can apply to jobs" ON job_applications FOR INSERT WITH CHECK (auth.uid()::text = laborer_id::text);
+CREATE POLICY "Employers can update application status" ON job_applications FOR UPDATE USING (
+    auth.uid()::text IN (SELECT employer_id::text FROM jobs WHERE id = job_id)
+);
+
+-- Messages policies
+CREATE POLICY "Users can view their messages" ON messages FOR SELECT USING (
+    auth.uid()::text = sender_id::text OR auth.uid()::text = receiver_id::text
+);
+
+    
 
