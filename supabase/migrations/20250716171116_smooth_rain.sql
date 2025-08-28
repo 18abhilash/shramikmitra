@@ -138,6 +138,11 @@ CREATE POLICY "Employers can update application status" ON job_applications FOR 
 CREATE POLICY "Users can view their messages" ON messages FOR SELECT USING (
     auth.uid()::text = sender_id::text OR auth.uid()::text = receiver_id::text
 );
+CREATE POLICY "Users can send messages" ON messages FOR INSERT WITH CHECK (auth.uid()::text = sender_id::text);
+CREATE POLICY "Users can update read status of received messages" ON messages FOR UPDATE USING (
+    auth.uid()::text = receiver_id::text
+);
+
 
     
 
