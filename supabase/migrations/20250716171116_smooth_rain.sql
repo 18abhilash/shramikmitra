@@ -123,3 +123,9 @@ CREATE POLICY "Laborers can manage own profile" ON laborer_profiles FOR ALL USIN
 -- Jobs policies
 CREATE POLICY "Anyone can view open jobs" ON jobs FOR SELECT USING (true);
 CREATE POLICY "Employers can manage own jobs" ON jobs FOR ALL USING (auth.uid()::text = employer_id::text);
+
+- Job applications policies
+CREATE POLICY "Users can view applications for their jobs/applications" ON job_applications FOR SELECT USING (
+    auth.uid()::text = laborer_id::text OR 
+    auth.uid()::text IN (SELECT employer_id::text FROM jobs WHERE id = job_id)
+
