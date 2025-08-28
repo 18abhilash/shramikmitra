@@ -174,3 +174,19 @@ CREATE TRIGGER update_rating_trigger
     FOR EACH ROW
     EXECUTE FUNCTION update_user_rating();
 
+-- Insert sample data for testing
+INSERT INTO users (id, email, phone, name, role, verified, rating, location_lat, location_lng, location_address) VALUES
+('550e8400-e29b-41d4-a716-446655440001', 'john.worker@example.com', '+1234567890', 'John Worker', 'laborer', true, 4.8, 40.7128, -74.0060, 'New York, NY'),
+('550e8400-e29b-41d4-a716-446655440002', 'sarah.employer@example.com', '+1234567891', 'Sarah Johnson', 'employer', true, 4.9, 40.7589, -73.9851, 'Manhattan, NY'),
+('550e8400-e29b-41d4-a716-446655440003', 'mike.builder@example.com', '+1234567892', 'Mike Builder', 'laborer', true, 4.7, 40.7505, -73.9934, 'Brooklyn, NY');
+
+INSERT INTO laborer_profiles (user_id, skills, experience, hourly_rate, availability, languages, description) VALUES
+('550e8400-e29b-41d4-a716-446655440001', '{"Construction", "Masonry", "Painting"}', 5, 25.00, 'available', '{"English", "Spanish"}', 'Experienced construction worker with 5 years in masonry and painting'),
+('550e8400-e29b-41d4-a716-446655440003', '{"Construction", "Electrical", "Plumbing"}', 8, 35.00, 'available', '{"English"}', 'Skilled tradesman with electrical and plumbing expertise');
+
+INSERT INTO jobs (id, title, description, category, employer_id, location_lat, location_lng, location_address, pay_rate, pay_type, duration, requirements, start_date, urgent) VALUES
+('660e8400-e29b-41d4-a716-446655440001', 'Kitchen Renovation Helper', 'Need assistance with kitchen renovation project. Basic construction skills required.', 'construction', '550e8400-e29b-41d4-a716-446655440002', 40.7589, -73.9851, 'Manhattan, NY', 28.00, 'hourly', '3 days', '{"Basic tools", "Construction experience", "Reliable"}', NOW() + INTERVAL '1 day', false),
+('660e8400-e29b-41d4-a716-446655440002', 'Garden Landscaping', 'Help with planting and basic landscaping work in residential garden.', 'agriculture', '550e8400-e29b-41d4-a716-446655440002', 40.7505, -73.9934, 'Brooklyn, NY', 22.00, 'hourly', '2 days', '{"Garden tools", "Physical fitness"}', NOW() + INTERVAL '2 days', true);
+
+
+
