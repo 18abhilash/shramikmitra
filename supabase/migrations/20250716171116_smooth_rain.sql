@@ -68,3 +68,17 @@ CREATE TABLE IF NOT EXISTS job_applications (
     UNIQUE(job_id, laborer_id)
 );
 
+-- Messages table
+CREATE TABLE IF NOT EXISTS messages (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    sender_id UUID REFERENCES users(id) ON DELETE CASCADE,
+    receiver_id UUID REFERENCES users(id) ON DELETE CASCADE,
+    content TEXT NOT NULL,
+    type VARCHAR(20) CHECK (type IN ('text', 'voice', 'location')) DEFAULT 'text',
+    read BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+
+
+
