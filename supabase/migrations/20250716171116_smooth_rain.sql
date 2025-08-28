@@ -104,3 +104,11 @@ CREATE INDEX IF NOT EXISTS idx_job_applications_job_id ON job_applications(job_i
 CREATE INDEX IF NOT EXISTS idx_job_applications_laborer_id ON job_applications(laborer_id);
 CREATE INDEX IF NOT EXISTS idx_messages_sender_receiver ON messages(sender_id, receiver_id);
 
+ALTER TABLE users ENABLE ROW LEVEL SECURITY;
+ALTER TABLE laborer_profiles ENABLE ROW LEVEL SECURITY;
+ALTER TABLE jobs ENABLE ROW LEVEL SECURITY;
+ALTER TABLE job_applications ENABLE ROW LEVEL SECURITY;
+ALTER TABLE messages ENABLE ROW LEVEL SECURITY;
+ALTER TABLE ratings ENABLE ROW LEVEL SECURITY;
+
+
