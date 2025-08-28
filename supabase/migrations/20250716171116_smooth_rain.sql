@@ -143,6 +143,19 @@ CREATE POLICY "Users can update read status of received messages" ON messages FO
     auth.uid()::text = receiver_id::text
 );
 
+-- Ratings policies
+CREATE POLICY "Anyone can view ratings" ON ratings FOR SELECT USING (true);
+CREATE POLICY "Users can rate after job completion" ON ratings FOR INSERT WITH CHECK (
+    auth.uid()::text = rater_id::text AND
+    EXISTS (
+        SELECT 1 FROM jobs 
+        WHERE id = job_id AND status = 'completed' AND 
+        (employer_id::text = auth.uid()::text OR assigned_to::text = auth.uid()::text)
+    )
+);
+
+
+
 
     
 
