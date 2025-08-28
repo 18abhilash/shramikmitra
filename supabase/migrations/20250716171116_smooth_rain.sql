@@ -120,8 +120,6 @@ CREATE POLICY "Users can insert own profile" ON users FOR INSERT WITH CHECK (aut
 CREATE POLICY "Anyone can view laborer profiles" ON laborer_profiles FOR SELECT USING (true);
 CREATE POLICY "Laborers can manage own profile" ON laborer_profiles FOR ALL USING (auth.uid()::text = user_id::text);
 
-
-
-
-
-
+-- Jobs policies
+CREATE POLICY "Anyone can view open jobs" ON jobs FOR SELECT USING (true);
+CREATE POLICY "Employers can manage own jobs" ON jobs FOR ALL USING (auth.uid()::text = employer_id::text);
