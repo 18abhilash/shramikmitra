@@ -187,6 +187,3 @@ INSERT INTO laborer_profiles (user_id, skills, experience, hourly_rate, availabi
 INSERT INTO jobs (id, title, description, category, employer_id, location_lat, location_lng, location_address, pay_rate, pay_type, duration, requirements, start_date, urgent) VALUES
 ('660e8400-e29b-41d4-a716-446655440001', 'Kitchen Renovation Helper', 'Need assistance with kitchen renovation project. Basic construction skills required.', 'construction', '550e8400-e29b-41d4-a716-446655440002', 40.7589, -73.9851, 'Manhattan, NY', 28.00, 'hourly', '3 days', '{"Basic tools", "Construction experience", "Reliable"}', NOW() + INTERVAL '1 day', false),
 ('660e8400-e29b-41d4-a716-446655440002', 'Garden Landscaping', 'Help with planting and basic landscaping work in residential garden.', 'agriculture', '550e8400-e29b-41d4-a716-446655440002', 40.7505, -73.9934, 'Brooklyn, NY', 22.00, 'hourly', '2 days', '{"Garden tools", "Physical fitness"}', NOW() + INTERVAL '2 days', true);
-
-
-
