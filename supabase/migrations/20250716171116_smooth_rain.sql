@@ -21,3 +21,17 @@ CREATE TABLE IF NOT EXISTS users (
     last_active TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
+-- Laborer profiles table
+CREATE TABLE IF NOT EXISTS laborer_profiles (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+    skills TEXT[] DEFAULT '{}',
+    experience INTEGER DEFAULT 0,
+    hourly_rate DECIMAL(8,2) DEFAULT 15.00,
+    availability VARCHAR(20) CHECK (availability IN ('available', 'busy', 'offline')) DEFAULT 'available',
+    languages TEXT[] DEFAULT '{"English"}',
+    description TEXT DEFAULT '',
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
