@@ -231,4 +231,3 @@ For support and questions:
 
 ---
 
-**Note**: This application is designed with accessibility and low-literacy users in mind, featuring voice-first interactions and intuitive visual design.
