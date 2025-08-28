@@ -107,6 +107,13 @@ CREATE INDEX IF NOT EXISTS idx_job_applications_job_id ON job_applications(job_i
 CREATE INDEX IF NOT EXISTS idx_job_applications_laborer_id ON job_applications(laborer_id);
 CREATE INDEX IF NOT EXISTS idx_messages_sender_receiver ON messages(sender_id, receiver_id);
 
+ALTER TABLE users ENABLE ROW LEVEL SECURITY;
+ALTER TABLE laborer_profiles ENABLE ROW LEVEL SECURITY;
+ALTER TABLE jobs ENABLE ROW LEVEL SECURITY;
+ALTER TABLE job_applications ENABLE ROW LEVEL SECURITY;
+ALTER TABLE messages ENABLE ROW LEVEL SECURITY;
+ALTER TABLE ratings ENABLE ROW LEVEL SECURITY;
+
 -- Users can read all user profiles but only update their own
 CREATE POLICY "Users can view all profiles" ON users FOR SELECT USING (true);
 CREATE POLICY "Users can update own profile" ON users FOR UPDATE USING (auth.uid()::text = id::text);
