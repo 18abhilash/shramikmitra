@@ -169,6 +169,22 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+- Functions to update user ratings
+CREATE OR REPLACE FUNCTION update_user_rating()
+RETURNS TRIGGER AS $$
+BEGIN
+    UPDATE users 
+    SET rating = (
+        SELECT COALESCE(AVG(rating), 0) 
+        FROM ratings 
+        WHERE rated_id = NEW.rated_id
+    )
+    WHERE id = NEW.rated_id;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+
 
 
 
