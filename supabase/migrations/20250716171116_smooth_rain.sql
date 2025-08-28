@@ -106,3 +106,22 @@ CREATE INDEX IF NOT EXISTS idx_jobs_location ON jobs(location_lat, location_lng)
 CREATE INDEX IF NOT EXISTS idx_job_applications_job_id ON job_applications(job_id);
 CREATE INDEX IF NOT EXISTS idx_job_applications_laborer_id ON job_applications(laborer_id);
 CREATE INDEX IF NOT EXISTS idx_messages_sender_receiver ON messages(sender_id, receiver_id);
+
+-- Users can read all user profiles but only update their own
+CREATE POLICY "Users can view all profiles" ON users FOR SELECT USING (true);
+CREATE POLICY "Users can update own profile" ON users FOR UPDATE USING (auth.uid()::text = id::text);
+CREATE POLICY "Users can insert own profile" ON users FOR INSERT WITH CHECK (auth.uid()::text = id::text);
+
+-- Laborer profiles policies
+CREATE POLICY "Anyone can view laborer profiles" ON laborer_profiles FOR SELECT USING (true);
+CREATE POLICY "Laborers can manage own profile" ON laborer_profiles FOR ALL USING (auth.uid()::text = user_id::text);
+
+-- Jobs policies
+CREATE POLICY "Anyone can view open jobs" ON jobs FOR SELECT USING (true);
+CREATE POLICY "Employers can manage own jobs" ON jobs FOR ALL USING (auth.uid()::text = employer_id::text);
+
+- Job applications policies
+CREATE POLICY "Users can view applications for their jobs/applications" ON job_applications FOR SELECT USING (
+    auth.uid()::text = laborer_id::text OR 
+    auth.uid()::text IN (SELECT employer_id::text FROM jobs WHERE id = job_id)
+
