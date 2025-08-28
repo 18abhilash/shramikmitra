@@ -103,7 +103,3 @@ CREATE INDEX IF NOT EXISTS idx_job_applications_job_id ON job_applications(job_i
 CREATE INDEX IF NOT EXISTS idx_job_applications_laborer_id ON job_applications(laborer_id);
 CREATE INDEX IF NOT EXISTS idx_messages_sender_receiver ON messages(sender_id, receiver_id);
 
-
-
-
-
