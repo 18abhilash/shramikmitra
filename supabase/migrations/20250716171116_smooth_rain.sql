@@ -1,4 +1,4 @@
--- LaborConnect Database Schema
+- LaborConnect Database Schema
 -- Run this SQL in your Supabase SQL editor to set up the database
 
 -- Enable UUID extension
@@ -20,6 +20,21 @@ CREATE TABLE IF NOT EXISTS users (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     last_active TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
+
+-- Laborer profiles table
+CREATE TABLE IF NOT EXISTS laborer_profiles (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+    skills TEXT[] DEFAULT '{}',
+    experience INTEGER DEFAULT 0,
+    hourly_rate DECIMAL(8,2) DEFAULT 15.00,
+    availability VARCHAR(20) CHECK (availability IN ('available', 'busy', 'offline')) DEFAULT 'available',
+    languages TEXT[] DEFAULT '{"English"}',
+    description TEXT DEFAULT '',
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
 
 -- Laborer profiles table
 CREATE TABLE IF NOT EXISTS laborer_profiles (
@@ -68,17 +83,6 @@ CREATE TABLE IF NOT EXISTS job_applications (
     UNIQUE(job_id, laborer_id)
 );
 
--- Messages table
-CREATE TABLE IF NOT EXISTS messages (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    sender_id UUID REFERENCES users(id) ON DELETE CASCADE,
-    receiver_id UUID REFERENCES users(id) ON DELETE CASCADE,
-    content TEXT NOT NULL,
-    type VARCHAR(20) CHECK (type IN ('text', 'voice', 'location')) DEFAULT 'text',
-    read BOOLEAN DEFAULT FALSE,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-);
-
 -- Ratings table
 CREATE TABLE IF NOT EXISTS ratings (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -91,7 +95,6 @@ CREATE TABLE IF NOT EXISTS ratings (
     UNIQUE(job_id, rater_id, rated_id)
 );
 
--- Indexes for better performance
 CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
 CREATE INDEX IF NOT EXISTS idx_users_role ON users(role);
 CREATE INDEX IF NOT EXISTS idx_users_location ON users(location_lat, location_lng);
@@ -128,7 +131,7 @@ CREATE POLICY "Employers can manage own jobs" ON jobs FOR ALL USING (auth.uid():
 CREATE POLICY "Users can view applications for their jobs/applications" ON job_applications FOR SELECT USING (
     auth.uid()::text = laborer_id::text OR 
     auth.uid()::text IN (SELECT employer_id::text FROM jobs WHERE id = job_id)
-    );
+     );
 CREATE POLICY "Laborers can apply to jobs" ON job_applications FOR INSERT WITH CHECK (auth.uid()::text = laborer_id::text);
 CREATE POLICY "Employers can update application status" ON job_applications FOR UPDATE USING (
     auth.uid()::text IN (SELECT employer_id::text FROM jobs WHERE id = job_id)
@@ -188,6 +191,4 @@ $$ LANGUAGE plpgsql;
 
 
 
-
     
-
