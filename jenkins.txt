@@ -1,0 +1,32 @@
+🔧 Jenkins CI/CD Role in DevOps
+
+Jenkins is used in this project as the primary Continuous Integration/Continuous Deployment (CI/CD) tool. It automates the process of building, testing, and deploying code, ensuring rapid and reliable delivery of software changes.
+
+✅ Key Responsibilities:
+
+Continuous Integration:
+Automatically triggers builds and runs tests when new code is pushed to the repository (e.g., GitHub/GitLab/Bitbucket).
+
+Automated Testing:
+Executes unit, integration, or UI tests to validate code quality before deployment.
+
+Continuous Deployment:
+Deploys tested code to staging or production environments using defined pipelines (e.g., via shell scripts, Docker, Kubernetes, etc.).
+
+Pipeline as Code:
+Jenkins pipelines are defined using Jenkinsfile in the root of the repo, making the build and deployment process version-controlled and reproducible.
+
+Notifications:
+Sends alerts via email, Slack, or other integrations in case of build failures or successful deployments.
+
+🔁 Workflow Example
+
+Developer pushes code to Git.
+
+Jenkins detects the change via webhooks.
+
+Jenkins runs tests and builds the application.
+
+If successful, Jenkins deploys the app to the staging/production environment.
+
+Notifications are sent to the team.
