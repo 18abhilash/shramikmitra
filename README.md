@@ -69,7 +69,7 @@ This module allows labourers (employees) to create an account on the platform wi
 7.	For verifying the profile govt id of the employee will be taken.
 ✨ Features
 •	Voice-driven data entry.
-•	OTP verification (SMS/email).
+•	OTP verification (SMS/email). 
 •	Skills & experience recording.
 •	Multilingual audio prompts (Hindi, Telugu, English, etc.).
 •	Profile stored securely in database (Supabase/Firebase).
