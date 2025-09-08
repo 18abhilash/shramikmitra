@@ -1,4 +1,4 @@
-# LaborConnect - AI-Powered Labor Marketplace
+# LaborConnect - AI-Powered Labor Marketplace 
 
 A comprehensive web application connecting temporary local laborers with employers, featuring AI voice assistance, multilingual support, and location-based matching.
 
@@ -54,7 +54,7 @@ Before running the application, you'll need:
 3. **Node.js**: Version 16 or higher
 
 ## 🚀 Quick Start
-
+ 
 ### 1. Clone and Install
 ```bash
 git clone <repository-url>
