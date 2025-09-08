@@ -44,6 +44,154 @@ A comprehensive web application connecting temporary local laborers with employe
 - **Google Translate API** for multilingual support
 - **Web Speech API** for voice recognition
 - **Geolocation API** for location tracking
+- 
+1. Register for Employee (Laborer Registration)
+🎯 Purpose
+This module allows labourers (employees) to create an account on the platform with voice-first, multilingual support so even uneducated workers can register without typing.
+🔄 Workflow
+1.	Worker opens the app → selects “Register as Employee”.
+2.	Voice assistant greets and asks for details (name, skills, location).
+3.	Worker responds by speaking (e.g., “My name is Raju, I am a mason with 5 years experience”).
+4.	Speech-to-text (Whisper API) converts it into structured text.
+5.	Profile data is auto-translated into supported languages.
+6.	OTP verification via phone/email finalizes registration.
+7.	For verifying the profile govt id of the employee will be taken.
+✨ Features
+•	Voice-driven data entry.
+•	OTP verification (SMS/email).
+•	Skills & experience recording.
+•	Multilingual audio prompts (Hindi, Telugu, English, etc.).
+•	Profile stored securely in database (Supabase/Firebase).
+⚙️ Technical Implementation
+•	UI: Simple form with mic button (fallback text fields).
+•	APIs: Firebase Auth (OTP), Google Translate API.
+•	DB: laborer_profiles table/collection for storing skills, location, availability.
+•	Voice: OpenAI Whisper for speech-to-text.
+________________________________________
+2. Register for Job Provider (Employer Registration)
+🎯 Purpose
+This module lets employers register and create company/personal profiles to post jobs. It also supports voice-assisted registration for accessibility.
+🔄 Workflow
+1.	Employer selects “Register as Job Provider”.
+2.	Voice assistant asks for:
+o	Company/individual name
+o	Contact number/email
+o	Job categories offered (construction, farming, etc.)
+o	Location
+3.	Employer confirms details.
+4.	OTP verification secures account.
+✨ Features
+•	Voice/text registration support.
+•	Company details setup.
+•	OTP-based verification.
+•	Role-based account flag (“job_provider”).
+⚙️ Technical Implementation
+•	UI: Registration screen with voice prompt.
+•	APIs: Firebase/Supabase Auth for signup.
+•	DB: employer_profiles for employer details.
+•	Voice: Text-to-speech (prompts) + speech-to-text (inputs).
+________________________________________
+3. Login for Employee
+🎯 Purpose
+Provides secure login for laborers with voice-based OTP/password support.
+🔄 Workflow
+1.	Employee clicks “Login as Employee”.
+2.	Voice assistant asks: “Say your phone number or email.”
+3.	Employee speaks input.
+4.	OTP sent → employee enters/speaks it.
+5.	On success, laborer is redirected to job search dashboard.
+✨ Features
+•	Voice login (phone/email + OTP).
+•	Role-based redirection (employee dashboard).
+•	Session persistence with JWT tokens.
+•	Multilingual audio prompts.
+⚙️ Technical Implementation
+•	UI: Minimal fields with mic option.
+•	Auth: Firebase Auth / Supabase Auth.
+•	Security: JWT stored in encrypted storage (Android Keystore).
+________________________________________
+4. Login for Job Provider
+🎯 Purpose
+Allows job providers to securely log in with OTP/password, accessible via voice.
+🔄 Workflow
+1.	Employer selects “Login as Job Provider”.
+2.	Speaks phone/email.
+3.	OTP sent → entered/speech input.
+4.	On success, redirected to job posting dashboard.
+✨ Features
+•	Voice OTP login.
+•	Secure session management.
+•	Role-specific dashboard access.
+⚙️ Technical Implementation
+•	UI: Login page with mic button.
+•	Auth: Firebase OTP login.
+•	DB: Check if role = employer before redirect.
+________________________________________
+5. Home Page with Search Bar + AI Voice Chatbot
+🎯 Purpose
+Acts as the main entry screen, where users interact with an AI-powered voice assistant to search jobs/candidates, navigate, or perform actions.
+🔄 Workflow
+1.	User logs in → lands on Home Page.
+2.	Home shows:
+o	Voice-enabled search bar.
+o	AI chatbot (microphone button).
+o	Role-based options:
+	Employee → Job Search
+	Employer → Employee Search / Post Job
+3.	User can speak:
+o	“Find jobs near me” → job search opens.
+o	“Show my profile” → profile page opens.
+o	“Post a job for tomorrow” → employer job form opens.
+✨ Features
+•	AI chatbot for navigation & help.
+•	Multilingual text-to-speech responses.
+•	Voice-enabled search bar.
+•	Context-aware actions.
+⚙️ Technical Implementation
+•	AI: GPT-4o + Whisper (voice input + smart replies).
+•	UI: SearchView with mic, chatbot popup.
+•	DB Queries: Job/employee search APIs.
+________________________________________
+6. Job Searching Page for Employee
+🎯 Purpose
+Enables employees to search and apply for jobs using voice-first, GPS-based matching.
+🔄 Workflow
+1.	Employee opens Job Search Page.
+2.	Speaks query: “Find farming jobs within 5 km.”
+3.	System fetches nearby jobs from database.
+4.	Results displayed with pay rate, location, employer rating.
+5.	Employee can say: “Apply for the second job.” → Auto-application triggered.
+✨ Features
+•	Voice job search.
+•	GPS-enabled location filtering.
+•	Auto-read job details aloud in local language.
+•	One-tap voice-based job application.
+⚙️ Technical Implementation
+•	Location: Google Maps API for job distance.
+•	DB: jobs collection with geo-coordinates.
+•	UI: RecyclerView/List with mic button.
+•	AI: Text-to-speech reads jobs aloud.
+________________________________________
+7. Employees Available Page for Job Provider
+🎯 Purpose
+Allows employers to browse available workers by skills, rating, and proximity.
+🔄 Workflow
+1.	Employer opens Employees Available Page.
+2.	Speaks query: “Find carpenters near Vijayawada.”
+3.	App fetches matching laborers from DB.
+4.	Profiles shown with skill, rating, distance.
+5.	Employer can say: “Hire the first worker.” → Worker receives job request notification.
+✨ Features
+•	Voice search for employees.
+•	Geo-location filtering.
+•	Voice-based hiring action.
+•	Ratings & reviews shown in search results.
+⚙️ Technical Implementation
+•	Location: Google Maps API for filtering workers.
+•	DB: laborer_profiles with skills & geo-coordinates.
+•	UI: RecyclerView/List with profile cards.
+•	AI: Text-to-speech to read worker profiles aloud.
+
 
 ## 📋 Prerequisites
 
