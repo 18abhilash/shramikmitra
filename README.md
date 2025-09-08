@@ -45,7 +45,7 @@ A comprehensive web application connecting temporary local laborers with employe
 - **Web Speech API** for voice recognition
 - **Geolocation API** for location tracking
 
-*** Module Description** 
+**Module Description**
 1. Register for Employee (Laborer Registration)
 🎯 Purpose
 This module allows labourers (employees) to create an account on the platform with voice-first, multilingual support so even uneducated workers can register without typing.
