@@ -53,8 +53,8 @@ Before running the application, you'll need:
 2. **Google Cloud Account**: Enable Maps and Translate APIs
 3. **Node.js**: Version 16 or higher
 
-
-**🧑‍💻Module Descriptions**
+________________________________________
+## **🧑‍💻Module Descriptions**
 
 1. Register for Employee (Laborer Registration):
 🎯 Purpose:
@@ -78,7 +78,6 @@ This module allows labourers (employees) to create an account on the platform wi
 •	APIs: Firebase Auth (OTP), Google Translate API.
 •	DB: laborer_profiles table/collection for storing skills, location, availability.
 •	Voice: OpenAI Whisper for speech-to-text.
-________________________________________
 2. Register for Job Provider (Employer Registration):
 🎯 Purpose:
 This module lets employers register and create company/personal profiles to post jobs. It also supports voice-assisted registration for accessibility.
@@ -101,7 +100,6 @@ o	Location
 •	APIs: Firebase/Supabase Auth for signup.
 •	DB: employer_profiles for employer details.
 •	Voice: Text-to-speech (prompts) + speech-to-text (inputs).
-________________________________________
 3. Login for Employee:
 🎯 Purpose:
 Provides secure login for laborers with voice-based OTP/password support.
@@ -120,7 +118,6 @@ Provides secure login for laborers with voice-based OTP/password support.
 •	UI: Minimal fields with mic option.
 •	Auth: Firebase Auth / Supabase Auth.
 •	Security: JWT stored in encrypted storage (Android Keystore).
-________________________________________
 4. Login for Job Provider:
 🎯 Purpose:
 Allows job providers to securely log in with OTP/password, accessible via voice.
@@ -137,7 +134,6 @@ Allows job providers to securely log in with OTP/password, accessible via voice.
 •	UI: Login page with mic button.
 •	Auth: Firebase OTP login.
 •	DB: Check if role = employer before redirect.
-________________________________________
 5. Home Page with Search Bar + AI Voice Chatbot:
 🎯 Purpose:
 Acts as the main entry screen, where users interact with an AI-powered voice assistant to search jobs/candidates, navigate, or perform actions.
@@ -162,7 +158,6 @@ o	“Post a job for tomorrow” → employer job form opens.
 •	AI: GPT-4o + Whisper (voice input + smart replies).
 •	UI: SearchView with mic, chatbot popup.
 •	DB Queries: Job/employee search APIs.
-________________________________________
 6. Job Searching Page for Employee:
 🎯 Purpose:
 Enables employees to search and apply for jobs using voice-first, GPS-based matching.
@@ -182,7 +177,6 @@ Enables employees to search and apply for jobs using voice-first, GPS-based matc
 •	DB: jobs collection with geo-coordinates.
 •	UI: RecyclerView/List with mic button.
 •	AI: Text-to-speech reads jobs aloud.
-________________________________________
 7. Employees Available Page for Job Provider:
 🎯 Purpose:
 Allows employers to browse available workers by skills, rating, and proximity.
@@ -203,7 +197,7 @@ Allows employers to browse available workers by skills, rating, and proximity.
 •	UI: RecyclerView/List with profile cards.
 •	AI: Text-to-speech to read worker profiles aloud.
 
-
+________________________________________
 ## 🚀 Quick Start
  
 ### 1. Clone and Install
