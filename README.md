@@ -57,7 +57,7 @@ ________________________________________
 ## **🧑‍💻Module Descriptions**
 
 1. Register for Employee (Laborer Registration):
-🎯 Purpose:
+2. 🎯 Purpose:
 This module allows labourers (employees) to create an account on the platform with voice-first, multilingual support so even uneducated workers can register without typing.
 🔄 Workflow
 1.	Worker opens the app → selects “Register as Employee”.
